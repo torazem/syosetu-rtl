@@ -1,0 +1,35 @@
+/* ==UserStyle==
+@name           Syosetu - Right-to-left
+@namespace      https://github.com/torazem
+@version        0.1.0
+@description    Styles for reading Syosetu online novels right-to-left like a real Japanese novel.
+@author         Torazem
+@homepageURL    https://github.com/torazem/syosetu-rtl
+@license        unlicense
+@preprocessor   stylus
+
+@var          range     novelHonbunWidth  "Width of reading pane" [1200, 500, 2000, 50, "px"]
+@var          range     novelHonbunHeight  "Height of reading pane" [600, 300, 2000, 50, "px"]
+@var          range     novelHonbunFontSize  "Font size" [24, 5, 100, 0.5, "px"]
+@var          range     novelHonbunLineHeight  "Text line spacing" [42, 5, 100, 0.5, "px"]
+@var          range     novelSubtitleFontSize  "Title font size" [50, 5, 100, 0.5, "px"]
+==/UserStyle== */
+@-moz-document domain("ncode.syosetu.com") {
+    #novel_honbun {
+        writing-mode: vertical-rl;
+        overflow: auto;
+        width: novelHonbunWidth;
+        height: novelHonbunHeight;
+        font-size: novelHonbunFontSize;
+        line-height: novelHonbunLineHeight;
+        padding-bottom: 50px;
+    }
+
+    #novel_color {
+        width: 100%;
+    }
+
+    .novel_subtitle {
+        font-size: novelSubtitleFontSize;
+    }
+}
