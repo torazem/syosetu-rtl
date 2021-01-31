@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Syosetu - Half to fullwidth numbers and letters
 // @namespace    https://github.com/torazem
-// @version      0.1
+// @version      0.1.1
 // @description  Converts halfwidth numbers and letters to fullwidth in Syosetu.com
 // @author       Torazem
 // @homepageURL  https://github.com/torazem/syosetu-rtl
@@ -77,13 +77,43 @@
         "z": "ｚ"
     };
 
-    function convert(c) {
-        console.log("Replaced " + c + " with fullwidth equivalent");
-        return halfToFullMapping[c];
-    }
+    const paragraphs = document.querySelectorAll("#novel_honbun>p");
 
-    var paragraphs = document.querySelectorAll("#novel_honbun>p");
+    // For each paragraph
     for (let i = 0; i < paragraphs.length; i++) {
-        paragraphs[i].innerText = paragraphs[i].innerText.replace(/\w/g, convert);
+        let inTag = false;  // flag masking html tags e.g. <br/>
+        let sb = [];  // string builder
+
+        // For each character in paragraph HTML
+        for (let j = 0; j < paragraphs[i].innerHTML.length; j++) {
+            let c1 = paragraphs[i].innerHTML[j];
+            sb.push(c1);
+
+            if (c1 == "<") {
+                inTag = true;
+                continue;
+            }
+
+            if (c1 == ">") {
+                inTag = false;
+                continue;
+            }
+
+            if (inTag) {
+                // Don't convert text belonging to tag.
+                // This doesn't apply to text between pairs of tags,
+                // e.g. <em>some text</em>
+                continue;
+            }
+
+            // Do mapping
+            let c2 = halfToFullMapping[c1];
+            if (c2) {
+                sb.pop();
+                sb.push(c2);
+            }
+        }
+        // Build string
+        paragraphs[i].innerHTML = sb.join("");
     }
 })();
